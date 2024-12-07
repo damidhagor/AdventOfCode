@@ -15,3 +15,6 @@ Year2024.Day05.Day05.DoPart2();
 
 Year2024.Day06.Day06.DoPart1();
 Year2024.Day06.Day06.DoPart2();
+
+Year2024.Day07.Day07.DoPart1();
+Year2024.Day07.Day07.DoPart2();
