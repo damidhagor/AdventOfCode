@@ -1,18 +1,17 @@
-using System.Diagnostics;
 using Equation = (long Result, long[] Numbers);
 
 namespace Year2024.Day07;
 
-public static class Day07
+public sealed class Day07 : IDay
 {
-    public static void DoPart1()
+    private Equation[] _equations = default!;
+
+    public int Day => 7;
+
+    public long DoPart1()
     {
-        var equations = ParseInput(Inputs.Equations);
-
-        var start = Stopwatch.GetTimestamp();
-
         var sum = 0L;
-        foreach (var equation in equations)
+        foreach (var equation in _equations)
         {
             if (IsValidWithAddMultiply(equation, 0, 0, true))
             {
@@ -20,19 +19,13 @@ public static class Day07
             }
         }
 
-        var time = Stopwatch.GetElapsedTime(start);
-
-        Console.WriteLine($"Day07 Part 1: {sum} ({time})");
+        return sum;
     }
 
-    public static void DoPart2()
+    public long DoPart2()
     {
-        var equations = ParseInput(Inputs.Equations);
-
-        var start = Stopwatch.GetTimestamp();
-
         var sum = 0L;
-        foreach (var equation in equations)
+        foreach (var equation in _equations)
         {
             if (IsValidWithAddMultiplyConcat(equation, 0, 0, 0))
             {
@@ -40,10 +33,22 @@ public static class Day07
             }
         }
 
-        var time = Stopwatch.GetElapsedTime(start);
-
-        Console.WriteLine($"Day07 Part 2: {sum} ({time})");
+        return sum;
     }
+
+    public void PrepareInput()
+        => _equations = Inputs.Equations
+            .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+            .Select(line =>
+            {
+                var parts = line.Split(": ");
+
+                var result = long.Parse(parts[0]);
+                var numbers = parts[1].Split(" ").Select(long.Parse).ToArray();
+
+                return (result, numbers);
+            })
+            .ToArray();
 
     private static bool IsValidWithAddMultiply(Equation equation, long currentResult, int nextNumberIndex, bool addNextNumber)
     {
@@ -98,21 +103,5 @@ public static class Day07
             < 10000000000 => 10,
             _ => throw new ArgumentOutOfRangeException(nameof(number))
         };
-    }
-
-    private static Equation[] ParseInput(string input)
-    {
-        return input
-            .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-            .Select(line =>
-            {
-                var parts = line.Split(": ");
-
-                var result = long.Parse(parts[0]);
-                var numbers = parts[1].Split(" ").Select(long.Parse).ToArray();
-
-                return (result, numbers);
-            })
-            .ToArray();
     }
 }

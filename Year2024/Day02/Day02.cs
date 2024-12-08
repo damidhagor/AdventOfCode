@@ -1,12 +1,16 @@
 namespace Year2024.Day02;
 
-public static class Day02
+public sealed class Day02 : IDay
 {
-    public static void DoPart1()
-    {
-        int safeReports = 0;
+    private string[] _part1Lines = default!;
+    private string[] _part2Lines = default!;
 
-        foreach (var line in Inputs.Part1.Split("\r\n"))
+    public int Day => 2;
+
+    public long DoPart1()
+    {
+        var safeReports = 0;
+        foreach (var line in _part1Lines)
         {
             var isReportSafe = IsReportSafe(line.Split(' ').Select(int.Parse));
 
@@ -16,14 +20,13 @@ public static class Day02
             }
         }
 
-        Console.WriteLine($"Day02 Part 1: {safeReports}");
+        return safeReports;
     }
 
-    public static void DoPart2()
+    public long DoPart2()
     {
-        int safeReports = 0;
-
-        foreach (var line in Inputs.Part2.Split("\r\n"))
+        var safeReports = 0;
+        foreach (var line in _part2Lines)
         {
             var numbers = line.Split(' ').Select(int.Parse).ToArray();
 
@@ -49,7 +52,13 @@ public static class Day02
             }
         }
 
-        Console.WriteLine($"Day02 Part 2: {safeReports}");
+        return safeReports;
+    }
+
+    public void PrepareInput()
+    {
+        _part1Lines = Inputs.Part1.Split(Environment.NewLine);
+        _part2Lines = Inputs.Part2.Split(Environment.NewLine);
     }
 
     private static bool IsReportSafe(IEnumerable<int> numbers)

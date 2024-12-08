@@ -2,20 +2,14 @@ using System.Text.RegularExpressions;
 
 namespace Year2024.Day03;
 
-public static partial class Day03
+public sealed partial class Day03 : IDay
 {
-    [GeneratedRegex(@"mul\((\d+),(\d+)\)", RegexOptions.Compiled)]
-    private static partial Regex Part1Regex();
+    public int Day => 3;
 
-    [GeneratedRegex(@"mul\((\d+),(\d+)\)|do\(\)|don't\(\)", RegexOptions.Compiled)]
-    private static partial Regex Part2Regex();
-
-    public static void DoPart1()
+    public long DoPart1()
     {
-        var input = Inputs.Part1;
-
         var sum = 0;
-        foreach (Match match in Part1Regex().Matches(input))
+        foreach (Match match in Part1Regex().Matches(Inputs.Part1))
         {
             var number1 = int.Parse(match.Groups[1].ValueSpan);
             var number2 = int.Parse(match.Groups[2].ValueSpan);
@@ -23,17 +17,15 @@ public static partial class Day03
             sum += number1 * number2;
         }
 
-        Console.WriteLine($"Day03 Part 1: {sum}");
+        return sum;
     }
 
-    public static void DoPart2()
+    public long DoPart2()
     {
-        var input = Inputs.Part2;
-
         var sum = 0;
         var shouldSum = true;
 
-        foreach (Match match in Part2Regex().Matches(input))
+        foreach (Match match in Part2Regex().Matches(Inputs.Part2))
         {
             if (match.Value == "do()")
             {
@@ -56,6 +48,14 @@ public static partial class Day03
             }
         }
 
-        Console.WriteLine($"Day03 Part 2: {sum}");
+        return sum;
     }
+
+    public void PrepareInput() { }
+
+    [GeneratedRegex(@"mul\((\d+),(\d+)\)", RegexOptions.Compiled)]
+    private partial Regex Part1Regex();
+
+    [GeneratedRegex(@"mul\((\d+),(\d+)\)|do\(\)|don't\(\)", RegexOptions.Compiled)]
+    private partial Regex Part2Regex();
 }

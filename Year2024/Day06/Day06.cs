@@ -1,44 +1,36 @@
-using System.Diagnostics;
-
 namespace Year2024.Day06;
 
-public static class Day06
+public sealed class Day06 : IDay
 {
-    public static void DoPart1()
+    private Map _map = default!;
+
+    public int Day => 6;
+
+    public long DoPart1()
     {
-        var map = Map.Parse(Inputs.Room);
-
-        var start = Stopwatch.GetTimestamp();
-
-        var route = CalculateGuardRoute(map, out var _);
+        CalculateGuardRoute(_map.Copy(), out var _);
 
         var visitedPositions = 0;
-        for (var r = 0; r < map.Rows; r++)
+        for (var r = 0; r < _map.Rows; r++)
         {
-            for (var c = 0; c < map.Columns; c++)
+            for (var c = 0; c < _map.Columns; c++)
             {
-                if (map.Room[r, c] == Map.Positions.Visited)
+                if (_map.Room[r, c] == Map.Positions.Visited)
                 {
                     visitedPositions++;
                 }
             }
         }
 
-        var time = Stopwatch.GetElapsedTime(start);
-
-        Console.WriteLine($"Day06 Part 1: {visitedPositions} ({time})");
+        return visitedPositions;
     }
 
-    public static void DoPart2()
+    public long DoPart2()
     {
-        var map = Map.Parse(Inputs.Room);
-
-        var start = Stopwatch.GetTimestamp();
-        var loops = FindGuardRouteLoops(map);
-        var time = Stopwatch.GetElapsedTime(start);
-
-        Console.WriteLine($"Day06 Part 2: {loops} ({time})");
+        return FindGuardRouteLoops(_map.Copy());
     }
+
+    public void PrepareInput() => _map = Map.Parse(Inputs.Room);
 
     private static int FindGuardRouteLoops(Map map)
     {

@@ -1,41 +1,56 @@
+using System.Collections.Frozen;
+
 namespace Year2024.Day05;
 
-public static class Day05
+public sealed class Day05 : IDay
 {
-    public static void DoPart1()
+    private FrozenDictionary<int, int[]> _successorsByPredecessor = default!;
+    private int[][] _updates = default!;
+
+    public int Day => 5;
+
+    public long DoPart1()
     {
-        int pageSums = 0;
+        var correctUpdates = FilterUpdates(_successorsByPredecessor, _updates, true);
 
-        var (successorsByPredecessor, updates) = ParseInput(Inputs.Rules, Inputs.Updates);
-
-        var correctUpdates = FilterUpdates(successorsByPredecessor, updates, true);
-
+        var pageSums = 0;
         foreach (var update in correctUpdates)
         {
             pageSums += update[update.Length / 2];
         }
 
-        Console.WriteLine($"Day05 Part 1: {pageSums}");
+        return pageSums;
     }
 
-    public static void DoPart2()
+    public long DoPart2()
     {
-        int pageSums = 0;
+        var incorrectUpdates = FilterUpdates(_successorsByPredecessor, _updates, false);
 
-        var (successorsByPredecessor, updates) = ParseInput(Inputs.Rules, Inputs.Updates);
-
-        var incorrectUpdates = FilterUpdates(successorsByPredecessor, updates, false);
-
+        var pageSums = 0;
         foreach (var update in incorrectUpdates)
         {
-            var correctedUpdate = CorrectUpdates(successorsByPredecessor, update);
+            var correctedUpdate = CorrectUpdates(_successorsByPredecessor, update);
             pageSums += correctedUpdate[correctedUpdate.Length / 2];
         }
 
-        Console.WriteLine($"Day05 Part 2: {pageSums}");
+        return pageSums;
     }
 
-    private static IEnumerable<int[]> FilterUpdates(Dictionary<int, int[]> successorsByPredecessor, int[][] updates, bool returnCorrectUpdates)
+    public void PrepareInput()
+    {
+        _successorsByPredecessor = Inputs.Rules
+            .Split(Environment.NewLine)
+            .Select(line => line.Split('|'))
+            .GroupBy(rule => rule[0])
+            .ToFrozenDictionary(g => int.Parse(g.Key), g => g.Select(n => int.Parse(n[1])).ToArray());
+
+        _updates = Inputs.Updates
+            .Split(Environment.NewLine)
+            .Select(line => line.Split(',').Select(int.Parse).ToArray())
+            .ToArray();
+    }
+
+    private static IEnumerable<int[]> FilterUpdates(FrozenDictionary<int, int[]> successorsByPredecessor, int[][] updates, bool returnCorrectUpdates)
     {
         foreach (var update in updates)
         {
@@ -71,7 +86,7 @@ public static class Day05
         }
     }
 
-    private static int[] CorrectUpdates(Dictionary<int, int[]> successorsByPredecessor, int[] update)
+    private static int[] CorrectUpdates(FrozenDictionary<int, int[]> successorsByPredecessor, int[] update)
     {
         var correctedUpdate = new LinkedList<int>();
         correctedUpdate.AddFirst(update[0]);
@@ -104,21 +119,5 @@ public static class Day05
         }
 
         return [.. correctedUpdate];
-    }
-
-    private static (Dictionary<int, int[]> SuccessorsByPredecessor, int[][] updates) ParseInput(string rulesInput, string updatesInput)
-    {
-        var successorsByPredecessor = rulesInput
-            .Split(Environment.NewLine)
-            .Select(line => line.Split('|'))
-            .GroupBy(rule => rule[0])
-            .ToDictionary(g => int.Parse(g.Key), g => g.Select(n => int.Parse(n[1])).ToArray());
-
-        var updates = updatesInput
-            .Split(Environment.NewLine)
-            .Select(line => line.Split(',').Select(int.Parse).ToArray())
-            .ToArray();
-
-        return (successorsByPredecessor, updates);
     }
 }

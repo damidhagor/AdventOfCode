@@ -1,13 +1,17 @@
 namespace Year2024.Day04;
 
-public static class Day04
+public sealed class Day04 : IDay
 {
-    public static void DoPart1()
+    private TextMatrix _matrixPart1 = default!;
+    private TextMatrix _matrixPart2 = default!;
+
+    public int Day => 4;
+
+    public long DoPart1()
     {
-        var input = TextMatrix.Parse(Inputs.Part1);
+        var input = _matrixPart1;
 
         var count = 0;
-
         for (var row = 0; row < input.Rows; row++)
         {
             for (var col = 0; col < input.Columns; col++)
@@ -23,15 +27,14 @@ public static class Day04
             }
         }
 
-        Console.WriteLine($"Day04 Part 1: {count}");
+        return count;
     }
 
-    public static void DoPart2()
+    public long DoPart2()
     {
-        var input = TextMatrix.Parse(Inputs.Part2);
+        var input = _matrixPart2;
 
         var count = 0;
-
         for (var row = 1; row < input.Rows - 1; row++)
         {
             for (var col = 1; col < input.Columns - 1; col++)
@@ -47,7 +50,13 @@ public static class Day04
             }
         }
 
-        Console.WriteLine($"Day04 Part 2: {count}");
+        return count;
+    }
+
+    public void PrepareInput()
+    {
+        _matrixPart1 = TextMatrix.Parse(Inputs.Part1);
+        _matrixPart2 = TextMatrix.Parse(Inputs.Part2);
     }
 
     private static int FindXMAS(TextMatrix input, int row, int col, int rowDirection, int columnDirection)
