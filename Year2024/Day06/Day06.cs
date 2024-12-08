@@ -8,92 +8,76 @@ public sealed class Day06 : IDay
 
     public long DoPart1()
     {
-        CalculateGuardRoute(_map.Copy(), out var _);
-
-        var visitedPositions = 0;
-        for (var r = 0; r < _map.Rows; r++)
-        {
-            for (var c = 0; c < _map.Columns; c++)
-            {
-                if (_map.Room[r, c] == Map.Positions.Visited)
-                {
-                    visitedPositions++;
-                }
-            }
-        }
-
-        return visitedPositions;
+        var route = CalculateGuardRoute(_map, out var _);
+        return route.Count;
     }
 
     public long DoPart2()
     {
-        return FindGuardRouteLoops(_map.Copy());
+        return FindGuardRouteLoops(_map);
     }
 
     public void PrepareInput() => _map = Map.Parse(Inputs.Room);
 
     private static int FindGuardRouteLoops(Map map)
     {
-        var initialGuardRow = map.GetInitialGuardPosition().Position.Row;
-        var initialGuardColumn = map.GetInitialGuardPosition().Position.Column;
-        var originalRoute = CalculateGuardRoute(map.Copy(), out _);
+        var guardPosition = map.GuardPosition;
+        var originalRoute = CalculateGuardRoute(map, out _);
 
-        var obstaclePositions = new HashSet<(int Row, int Column)>();
-        foreach (var position in originalRoute.Where(p => p.Row != initialGuardRow || p.Column != initialGuardColumn))
+        var obstaclePositions = new HashSet<Position>();
+        foreach (var position in originalRoute.Where(p => p != guardPosition.Position))
         {
-            var newMap = map.Copy();
-            newMap.Room[position.Row, position.Column] = Map.Positions.Obstacle;
-
-            CalculateGuardRoute(newMap, out var routeLooped);
+            map[position] = Map.Positions.Obstacle;
+            CalculateGuardRoute(map, out var routeLooped);
+            map[position] = Map.Positions.Empty;
 
             if (routeLooped)
             {
-                obstaclePositions.Add((position.Row, position.Column));
+                obstaclePositions.Add(position);
             }
         }
 
         return obstaclePositions.Count;
     }
 
-    private static HashSet<(int Row, int Column, int Orientation)> CalculateGuardRoute(Map map, out bool routeLooped)
+    private static HashSet<Position> CalculateGuardRoute(Map map, out bool routeLooped)
     {
-        var route = new HashSet<(int Row, int Column, int Orientation)>();
-        var previousPosition = map.GetInitialGuardPosition();
+        var visited = new HashSet<Position>();
+        var route = new HashSet<GuardPosition>();
+        var guardPosition = map.GuardPosition;
 
         routeLooped = false;
         var routeChanging = true;
         while (routeChanging)
         {
-            var newPosition = MoveGuard(map, previousPosition);
+            var newGuardPosition = MoveGuard(map, guardPosition);
 
-            if (newPosition.Position == previousPosition.Position)
+            if (newGuardPosition.Position == guardPosition.Position)
             {
-                previousPosition = newPosition;
-                map[newPosition.Position] = previousPosition.Orientation;
+                guardPosition = newGuardPosition;
                 continue;
             }
 
             // loop detected
-            if (!route.Add(previousPosition.ToTuple()))
+            if (!route.Add(guardPosition))
             {
                 routeChanging = false;
                 routeLooped = true;
                 continue;
             }
 
-            map[previousPosition.Position] = Map.Positions.Visited;
+            visited.Add(guardPosition.Position);
 
-            if (!map.IsPositionInRoom(newPosition.Position))
+            if (!map.IsPositionInRoom(newGuardPosition.Position))
             {
                 routeChanging = false;
                 continue;
             }
 
-            previousPosition = newPosition;
-            map[newPosition.Position] = newPosition.Orientation;
+            guardPosition = newGuardPosition;
         }
 
-        return route;
+        return visited;
     }
 
     private static GuardPosition MoveGuard(Map map, GuardPosition position)

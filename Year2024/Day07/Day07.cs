@@ -11,11 +11,11 @@ public sealed class Day07 : IDay
     public long DoPart1()
     {
         var sum = 0L;
-        foreach (var equation in _equations)
+        for (var e = 0; e < _equations.Length; e++)
         {
-            if (IsValidWithAddMultiply(equation, 0, 0, true))
+            if (IsValidWithAddMultiply(_equations[e], 0, 0, true))
             {
-                sum += equation.Result;
+                sum += _equations[e].Result;
             }
         }
 
@@ -25,11 +25,11 @@ public sealed class Day07 : IDay
     public long DoPart2()
     {
         var sum = 0L;
-        foreach (var equation in _equations)
+        for (var e = 0; e < _equations.Length; e++)
         {
-            if (IsValidWithAddMultiplyConcat(equation, 0, 0, 0))
+            if (IsValidWithAddMultiplyConcat(_equations[e], 0, 0, 0))
             {
-                sum += equation.Result;
+                sum += _equations[e].Result;
             }
         }
 

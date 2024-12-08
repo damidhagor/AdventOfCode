@@ -1,7 +1,7 @@
 namespace Year2024.Day06;
 
-[System.Diagnostics.DebuggerDisplay("({Position.Row},{Position.Column},{Orientation})")]
-public readonly ref struct GuardPosition(Position position, int orientation)
+[DebuggerDisplay("({Position.Row},{Position.Column},{Orientation})")]
+public readonly record struct GuardPosition(Position position, int orientation)
 {
     public readonly Position Position { get; } = position;
 
@@ -24,6 +24,4 @@ public readonly ref struct GuardPosition(Position position, int orientation)
         Map.Positions.GuardLeft => new(Position, Map.Positions.GuardUp),
         _ => throw new InvalidOperationException()
     };
-
-    public (int Row, int Column, int Orientation) ToTuple() => (Position.Row, Position.Column, Orientation);
 }

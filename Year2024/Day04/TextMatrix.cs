@@ -1,10 +1,10 @@
-﻿namespace Year2024.Day04;
+namespace Year2024.Day04;
 
 public sealed record TextMatrix(char[,] Text, int Rows, int Columns)
 {
     public static TextMatrix Parse(string input)
     {
-        var lines = input.Split(Environment.NewLine).ToArray();
+        var lines = input.Split(Environment.NewLine);
 
         var rows = lines.Length;
         var columns = lines[0].Length;

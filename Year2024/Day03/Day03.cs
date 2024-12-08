@@ -39,11 +39,11 @@ public sealed partial class Day03 : IDay
                 continue;
             }
 
-            var number1 = int.Parse(match.Groups[1].ValueSpan);
-            var number2 = int.Parse(match.Groups[2].ValueSpan);
-
             if (shouldSum)
             {
+                var number1 = int.Parse(match.Groups[1].ValueSpan);
+                var number2 = int.Parse(match.Groups[2].ValueSpan);
+
                 sum += number1 * number2;
             }
         }

@@ -11,12 +11,14 @@ public sealed class Day05 : IDay
 
     public long DoPart1()
     {
-        var correctUpdates = FilterUpdates(_successorsByPredecessor, _updates, true);
-
         var pageSums = 0;
-        foreach (var update in correctUpdates)
+        for (var u = 0; u < _updates.Length; u++)
         {
-            pageSums += update[update.Length / 2];
+            var update = _updates[u];
+            if (IsUpdateCorrect(update, _successorsByPredecessor))
+            {
+                pageSums += update[update.Length / 2];
+            }
         }
 
         return pageSums;
@@ -24,13 +26,15 @@ public sealed class Day05 : IDay
 
     public long DoPart2()
     {
-        var incorrectUpdates = FilterUpdates(_successorsByPredecessor, _updates, false);
-
         var pageSums = 0;
-        foreach (var update in incorrectUpdates)
+        for (var u = 0; u < _updates.Length; u++)
         {
-            var correctedUpdate = CorrectUpdates(_successorsByPredecessor, update);
-            pageSums += correctedUpdate[correctedUpdate.Length / 2];
+            var update = _updates[u];
+            if (!IsUpdateCorrect(update, _successorsByPredecessor))
+            {
+                var correctedUpdate = CorrectUpdate(update, _successorsByPredecessor);
+                pageSums += correctedUpdate[correctedUpdate.Length / 2];
+            }
         }
 
         return pageSums;
@@ -50,49 +54,38 @@ public sealed class Day05 : IDay
             .ToArray();
     }
 
-    private static IEnumerable<int[]> FilterUpdates(FrozenDictionary<int, int[]> successorsByPredecessor, int[][] updates, bool returnCorrectUpdates)
+    private static bool IsUpdateCorrect(int[] update, FrozenDictionary<int, int[]> successorsByPredecessor)
     {
-        foreach (var update in updates)
+        var isUpdateCorrect = true;
+        for (var p = 0; p < update.Length; p++)
         {
-            var isUpdateCorrect = true;
-
-            foreach (var page in update.Index())
+            if (!successorsByPredecessor.TryGetValue(update[p], out var predecessors))
             {
-                if (!successorsByPredecessor.TryGetValue(page.Item, out var predecessors))
-                {
-                    continue;
-                }
+                continue;
+            }
 
-                foreach (var predecessor in predecessors)
+            for (var pr = 0; pr < predecessors.Length; pr++)
+            {
+                var predecessorIndex = Array.IndexOf(update, predecessors[pr]);
+                if (predecessorIndex > -1 && predecessorIndex < p)
                 {
-                    var predecessorIndex = Array.IndexOf(update, predecessor);
-                    if (predecessorIndex > -1 && predecessorIndex < page.Index)
-                    {
-                        isUpdateCorrect = false;
-                        break;
-                    }
-                }
-
-                if (!isUpdateCorrect)
-                {
+                    isUpdateCorrect = false;
                     break;
                 }
             }
-
-            if (isUpdateCorrect == returnCorrectUpdates)
-            {
-                yield return update;
-            }
         }
+
+        return isUpdateCorrect;
     }
 
-    private static int[] CorrectUpdates(FrozenDictionary<int, int[]> successorsByPredecessor, int[] update)
+    private static int[] CorrectUpdate(int[] update, FrozenDictionary<int, int[]> successorsByPredecessor)
     {
-        var correctedUpdate = new LinkedList<int>();
-        correctedUpdate.AddFirst(update[0]);
+        var correctedUpdate = new LinkedList<int>([update[0]]);
 
-        foreach (var page in update.Skip(1))
+        for (var u = 1; u < update.Length; u++)
         {
+            var page = update[u];
+
             if (!successorsByPredecessor.TryGetValue(page, out var successors))
             {
                 correctedUpdate.AddLast(page);
@@ -100,7 +93,7 @@ public sealed class Day05 : IDay
             }
 
             var correctedPage = correctedUpdate.First;
-            while (correctedPage != null)
+            while (correctedPage is not null)
             {
                 if (successors.Contains(correctedPage.Value))
                 {
@@ -108,7 +101,7 @@ public sealed class Day05 : IDay
                     break;
                 }
 
-                if (correctedPage.Next == null)
+                if (correctedPage.Next is null)
                 {
                     correctedUpdate.AddLast(page);
                     break;
