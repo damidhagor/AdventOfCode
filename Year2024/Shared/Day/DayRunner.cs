@@ -1,4 +1,4 @@
-namespace Year2024;
+namespace Year2024.Shared.Day;
 
 public static class DayRunner
 {

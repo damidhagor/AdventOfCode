@@ -2,34 +2,56 @@ namespace Year2024.Day06;
 
 public sealed class Day06 : IDay
 {
-    private Map _map = default!;
+    private Grid<int> _map = default!;
+    private GuardPosition _initialGuardPosition;
 
     public int Day => 6;
 
     public long DoPart1()
     {
-        var route = CalculateGuardRoute(_map, out var _);
+        var route = CalculateGuardRoute(_map, _initialGuardPosition, out var _);
         return route.Count;
     }
 
     public long DoPart2()
     {
-        return FindGuardRouteLoops(_map);
+        return FindGuardRouteLoops(_map, _initialGuardPosition);
     }
 
-    public void PrepareInput() => _map = Map.Parse(Inputs.Room);
-
-    private static int FindGuardRouteLoops(Map map)
+    public void PrepareInput()
     {
-        var guardPosition = map.GuardPosition;
-        var originalRoute = CalculateGuardRoute(map, out _);
+        _map = Grid<int>.Parse(
+            Inputs.Room,
+            c => c switch
+            {
+                '#' => Positions.Obstacle,
+                '^' => Positions.GuardUp,
+                _ => Positions.Empty
+            });
+
+        for (var r = 0; r < _map.Rows; r++)
+        {
+            for (var c = 0; c < _map.Columns; c++)
+            {
+                if (_map[r, c] is >= Positions.GuardUp and <= Positions.GuardLeft)
+                {
+                    _initialGuardPosition = new(new(r, c), _map[r, c]);
+                    return;
+                }
+            }
+        }
+    }
+
+    private static int FindGuardRouteLoops(Grid<int> map, GuardPosition guardPosition)
+    {
+        var originalRoute = CalculateGuardRoute(map, guardPosition, out _);
 
         var obstaclePositions = new HashSet<Position>();
         foreach (var position in originalRoute.Where(p => p != guardPosition.Position))
         {
-            map[position] = Map.Positions.Obstacle;
-            CalculateGuardRoute(map, out var routeLooped);
-            map[position] = Map.Positions.Empty;
+            map[position] = Positions.Obstacle;
+            CalculateGuardRoute(map, guardPosition, out var routeLooped);
+            map[position] = Positions.Empty;
 
             if (routeLooped)
             {
@@ -40,11 +62,10 @@ public sealed class Day06 : IDay
         return obstaclePositions.Count;
     }
 
-    private static HashSet<Position> CalculateGuardRoute(Map map, out bool routeLooped)
+    private static HashSet<Position> CalculateGuardRoute(Grid<int> map, GuardPosition guardPosition, out bool routeLooped)
     {
         var visited = new HashSet<Position>();
         var route = new HashSet<GuardPosition>();
-        var guardPosition = map.GuardPosition;
 
         routeLooped = false;
         var routeChanging = true;
@@ -68,7 +89,7 @@ public sealed class Day06 : IDay
 
             visited.Add(guardPosition.Position);
 
-            if (!map.IsPositionInRoom(newGuardPosition.Position))
+            if (!map.IsInBounds(newGuardPosition.Position))
             {
                 routeChanging = false;
                 continue;
@@ -80,12 +101,12 @@ public sealed class Day06 : IDay
         return visited;
     }
 
-    private static GuardPosition MoveGuard(Map map, GuardPosition position)
+    private static GuardPosition MoveGuard(Grid<int> map, GuardPosition position)
     {
         var nextPosition = position.MoveForward();
 
-        if (map.IsPositionInRoom(nextPosition.Position)
-            && map[nextPosition.Position] == Map.Positions.Obstacle)
+        if (map.IsInBounds(nextPosition.Position)
+            && map[nextPosition.Position] == Positions.Obstacle)
         {
             return position.TurnRight();
         }

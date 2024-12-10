@@ -2,14 +2,14 @@ namespace Year2024.Day04;
 
 public sealed class Day04 : IDay
 {
-    private TextMatrix _matrixPart1 = default!;
-    private TextMatrix _matrixPart2 = default!;
+    private Grid<char> _gridPart1 = default!;
+    private Grid<char> _gridPart2 = default!;
 
     public int Day => 4;
 
     public long DoPart1()
     {
-        var input = _matrixPart1;
+        var input = _gridPart1;
 
         var count = 0;
         for (var row = 0; row < input.Rows; row++)
@@ -32,18 +32,18 @@ public sealed class Day04 : IDay
 
     public long DoPart2()
     {
-        var input = _matrixPart2;
+        var input = _gridPart2;
 
         var count = 0;
         for (var row = 1; row < input.Rows - 1; row++)
         {
             for (var col = 1; col < input.Columns - 1; col++)
             {
-                if (input.Text[row, col] == 'A'
-                    && ((input.Text[row - 1, col - 1] == 'M' && input.Text[row + 1, col + 1] == 'S')
-                     || (input.Text[row - 1, col - 1] == 'S' && input.Text[row + 1, col + 1] == 'M'))
-                    && ((input.Text[row - 1, col + 1] == 'M' && input.Text[row + 1, col - 1] == 'S')
-                     || (input.Text[row - 1, col + 1] == 'S' && input.Text[row + 1, col - 1] == 'M')))
+                if (input[row, col] == 'A'
+                    && ((input[row - 1, col - 1] == 'M' && input[row + 1, col + 1] == 'S')
+                     || (input[row - 1, col - 1] == 'S' && input[row + 1, col + 1] == 'M'))
+                    && ((input[row - 1, col + 1] == 'M' && input[row + 1, col - 1] == 'S')
+                     || (input[row - 1, col + 1] == 'S' && input[row + 1, col - 1] == 'M')))
                 {
                     count++;
                 }
@@ -55,11 +55,11 @@ public sealed class Day04 : IDay
 
     public void PrepareInput()
     {
-        _matrixPart1 = TextMatrix.Parse(Inputs.Part1);
-        _matrixPart2 = TextMatrix.Parse(Inputs.Part2);
+        _gridPart1 = Grid<char>.Parse(Inputs.Part1, c => c);
+        _gridPart2 = Grid<char>.Parse(Inputs.Part2, c => c);
     }
 
-    private static int FindXMAS(TextMatrix input, int row, int col, int rowDirection, int columnDirection)
+    private static int FindXMAS(Grid<char> input, int row, int col, int rowDirection, int columnDirection)
     {
         if ((rowDirection < 0 && row < 3)
          || (rowDirection > 0 && row > input.Rows - 4)
@@ -69,10 +69,10 @@ public sealed class Day04 : IDay
             return 0;
         }
 
-        if (input.Text[row, col] == 'X'
-         && input.Text[row + rowDirection, col + columnDirection] == 'M'
-         && input.Text[row + rowDirection * 2, col + columnDirection * 2] == 'A'
-         && input.Text[row + rowDirection * 3, col + columnDirection * 3] == 'S')
+        if (input[row, col] == 'X'
+         && input[row + rowDirection, col + columnDirection] == 'M'
+         && input[row + rowDirection * 2, col + columnDirection * 2] == 'A'
+         && input[row + rowDirection * 3, col + columnDirection * 3] == 'S')
         {
             return 1;
         }
