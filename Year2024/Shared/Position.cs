@@ -14,4 +14,6 @@ public readonly record struct Position(int Row, int Column)
     public Position Down => new(Row + 1, Column);
 
     public Position Left => new(Row, Column - 1);
+
+    public override string ToString() => $"({Row},{Column})";
 }
