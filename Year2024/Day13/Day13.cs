@@ -11,7 +11,7 @@ public sealed partial class Day13 : IDay
     [GeneratedRegex(@"X[+=](\d+), Y[+=](\d+)")]
     private partial Regex CoordinateRegex { get; }
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var tokens = 0L;
 
@@ -21,10 +21,10 @@ public sealed partial class Day13 : IDay
             tokens += Calc(game.ButtonA, game.ButtonB, game.Prize);
         }
 
-        return tokens;
+        return tokens.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var tokens = 0L;
 
@@ -35,7 +35,7 @@ public sealed partial class Day13 : IDay
             tokens += Calc(game.ButtonA, game.ButtonB, prize);
         }
 
-        return tokens;
+        return tokens.ToString();
     }
 
     public void PrepareInput()

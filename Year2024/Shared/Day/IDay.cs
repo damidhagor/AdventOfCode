@@ -6,7 +6,7 @@ public interface IDay
 
     void PrepareInput();
 
-    long DoPart1();
+    string DoPart1();
 
-    long DoPart2();
+    string DoPart2();
 }

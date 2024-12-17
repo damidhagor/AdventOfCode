@@ -7,15 +7,15 @@ public sealed class Day06 : IDay
 
     public int Day => 6;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var route = CalculateGuardRoute(_map, _initialGuardPosition, out var _);
-        return route.Count;
+        return route.Count.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
-        return FindGuardRouteLoops(_map, _initialGuardPosition);
+        return FindGuardRouteLoops(_map, _initialGuardPosition).ToString();
     }
 
     public void PrepareInput()

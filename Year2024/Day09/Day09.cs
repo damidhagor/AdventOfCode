@@ -6,22 +6,22 @@ public sealed class Day09 : IDay
 
     public int Day => 9;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var disk = GetDisk(_diskMap);
 
         DefragDiskBlocks(disk);
 
-        return CalculateChecksum(disk);
+        return CalculateChecksum(disk).ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var disk = GetDisk(_diskMap);
 
         DefragDiskFiles(disk);
 
-        return CalculateChecksum(disk);
+        return CalculateChecksum(disk).ToString();
     }
 
     public void PrepareInput()

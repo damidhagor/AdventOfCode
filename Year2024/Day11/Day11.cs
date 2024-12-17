@@ -7,7 +7,7 @@ public sealed class Day11 : IDay
 
     public int Day => 11;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var stones = new List<long>(_stones);
 
@@ -17,10 +17,10 @@ public sealed class Day11 : IDay
             stoneCount += Blink(stones[s], Inputs.BlinksPart1);
         }
 
-        return stoneCount;
+        return stoneCount.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var stones = new List<long>(_stones);
 
@@ -30,7 +30,7 @@ public sealed class Day11 : IDay
             stoneCount += Blink(stones[s], Inputs.BlinksPart2);
         }
 
-        return stoneCount;
+        return stoneCount.ToString();
     }
 
     public void PrepareInput() => _stones = Inputs.Stones.Split(' ').Select(long.Parse).ToArray();

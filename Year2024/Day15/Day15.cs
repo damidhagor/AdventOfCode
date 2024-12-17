@@ -12,7 +12,7 @@ public sealed class Day15 : IDay
 
     public int Day => 15;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         DoSteps(_mapPart1, _steps, _robotPart1);
 
@@ -29,10 +29,10 @@ public sealed class Day15 : IDay
             }
         }
 
-        return sum;
+        return sum.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         DoSteps(_mapPart2, _steps, _robotPart2);
 
@@ -49,7 +49,7 @@ public sealed class Day15 : IDay
             }
         }
 
-        return sum;
+        return sum.ToString();
     }
 
     public void PrepareInput()

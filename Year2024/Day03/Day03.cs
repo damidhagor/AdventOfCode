@@ -6,7 +6,7 @@ public sealed partial class Day03 : IDay
 {
     public int Day => 3;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var sum = 0;
         foreach (Match match in Part1Regex().Matches(Inputs.Part1))
@@ -17,10 +17,10 @@ public sealed partial class Day03 : IDay
             sum += number1 * number2;
         }
 
-        return sum;
+        return sum.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var sum = 0;
         var shouldSum = true;
@@ -48,7 +48,7 @@ public sealed partial class Day03 : IDay
             }
         }
 
-        return sum;
+        return sum.ToString();
     }
 
     public void PrepareInput() { }

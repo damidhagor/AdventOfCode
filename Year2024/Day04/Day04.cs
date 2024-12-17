@@ -7,7 +7,7 @@ public sealed class Day04 : IDay
 
     public int Day => 4;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var input = _gridPart1;
 
@@ -27,10 +27,10 @@ public sealed class Day04 : IDay
             }
         }
 
-        return count;
+        return count.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var input = _gridPart2;
 
@@ -50,7 +50,7 @@ public sealed class Day04 : IDay
             }
         }
 
-        return count;
+        return count.ToString();
     }
 
     public void PrepareInput()

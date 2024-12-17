@@ -6,7 +6,7 @@ public sealed class Day08 : IDay
 
     public int Day => 8;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var antennas = GetAntennaPositions(_map);
 
@@ -35,10 +35,10 @@ public sealed class Day08 : IDay
             }
         }
 
-        return antinodes.Count;
+        return antinodes.Count.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var antennas = GetAntennaPositions(_map);
 
@@ -72,7 +72,7 @@ public sealed class Day08 : IDay
             }
         }
 
-        return antinodes.Count;
+        return antinodes.Count.ToString();
     }
 
     public void PrepareInput() => _map = Grid<char>.Parse(Inputs.Map, c => c);

@@ -9,7 +9,7 @@ public sealed class Day05 : IDay
 
     public int Day => 5;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var pageSums = 0;
         for (var u = 0; u < _updates.Length; u++)
@@ -21,10 +21,10 @@ public sealed class Day05 : IDay
             }
         }
 
-        return pageSums;
+        return pageSums.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var pageSums = 0;
         for (var u = 0; u < _updates.Length; u++)
@@ -37,7 +37,7 @@ public sealed class Day05 : IDay
             }
         }
 
-        return pageSums;
+        return pageSums.ToString();
     }
 
     public void PrepareInput()

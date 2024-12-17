@@ -11,7 +11,7 @@ public sealed partial class Day14 : IDay
 
     public int Day => 14;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var positions = MoveRobots(_robots, Inputs.RoomWidth, Inputs.RoomHeight, Inputs.Seconds);
 
@@ -44,10 +44,11 @@ public sealed partial class Day14 : IDay
             }
         }
 
-        return topLeftCount * topRightCount * bottomLeftCount * bottomRightCount;
+        var count = topLeftCount * topRightCount * bottomLeftCount * bottomRightCount;
+        return count.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var center = new Coordinate(Inputs.RoomWidth / 2, Inputs.RoomHeight / 2);
         var top = center.Y - 5;
@@ -73,11 +74,11 @@ public sealed partial class Day14 : IDay
             var ratioInCenter = (double)robotsInCenter / positions.Length;
             if (ratioInCenter > 0.1)
             {
-                return s;
+                return s.ToString();
             }
         }
 
-        return -1L;
+        return "";
     }
 
     public void PrepareInput()

@@ -4,7 +4,7 @@ public sealed class Day01 : IDay
 {
     public int Day => 1;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var left = Inputs.Part1Left;
         var right = Inputs.Part1Right;
@@ -18,10 +18,10 @@ public sealed class Day01 : IDay
             distance += Math.Abs(left[i] - right[i]);
         }
 
-        return distance;
+        return distance.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var left = Inputs.Part2Left;
         var right = Inputs.Part2Right;
@@ -40,7 +40,7 @@ public sealed class Day01 : IDay
             sum += left[i] * rightOccurrences.GetValueOrDefault(left[i]);
         }
 
-        return similarity;
+        return similarity.ToString();
     }
 
     public void PrepareInput() { }

@@ -8,7 +8,7 @@ public sealed class Day07 : IDay
 
     public int Day => 7;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var sum = 0L;
         for (var e = 0; e < _equations.Length; e++)
@@ -19,10 +19,10 @@ public sealed class Day07 : IDay
             }
         }
 
-        return sum;
+        return sum.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var sum = 0L;
         for (var e = 0; e < _equations.Length; e++)
@@ -33,7 +33,7 @@ public sealed class Day07 : IDay
             }
         }
 
-        return sum;
+        return sum.ToString();
     }
 
     public void PrepareInput()

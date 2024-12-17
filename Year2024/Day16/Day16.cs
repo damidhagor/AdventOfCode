@@ -8,20 +8,20 @@ public sealed class Day16 : IDay
 
     public int Day => 16;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var bestPositions = new BestPositions();
         var score = Move(_labyrinth, _end, _start, Directions.Right, 0, [], [], bestPositions);
 
-        return score;
+        return score.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var bestPositions = new BestPositions();
         Move(_labyrinth, _end, _start, Directions.Right, 0, [], [], bestPositions);
 
-        return bestPositions.Positions.Count;
+        return bestPositions.Positions.Count.ToString();
     }
 
     public void PrepareInput()

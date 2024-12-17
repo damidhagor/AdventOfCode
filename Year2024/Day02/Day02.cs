@@ -7,7 +7,7 @@ public sealed class Day02 : IDay
 
     public int Day => 2;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var safeReports = 0;
         foreach (var line in _part1Lines)
@@ -20,10 +20,10 @@ public sealed class Day02 : IDay
             }
         }
 
-        return safeReports;
+        return safeReports.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var safeReports = 0;
         foreach (var line in _part2Lines)
@@ -46,7 +46,7 @@ public sealed class Day02 : IDay
             }
         }
 
-        return safeReports;
+        return safeReports.ToString();
     }
 
     public void PrepareInput()

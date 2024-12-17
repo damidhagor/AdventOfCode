@@ -10,7 +10,7 @@ public sealed class Day12 : IDay
 
     public int Day => 12;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var plots = _plotsPart1;
 
@@ -49,10 +49,10 @@ public sealed class Day12 : IDay
             totalPrice += region.Count * perimeter;
         }
 
-        return totalPrice;
+        return totalPrice.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var regions = ExplorePlots(_plotsPart2);
 
@@ -67,7 +67,7 @@ public sealed class Day12 : IDay
             totalPrice += region.Count * sides;
         }
 
-        return totalPrice;
+        return totalPrice.ToString();
     }
 
     public void PrepareInput()

@@ -6,7 +6,7 @@ public sealed class Day10 : IDay
 
     public int Day => 10;
 
-    public long DoPart1()
+    public string DoPart1()
     {
         var scores = 0L;
         for (var r = 0; r < _map.Rows; r++)
@@ -22,10 +22,10 @@ public sealed class Day10 : IDay
             }
         }
 
-        return scores;
+        return scores.ToString();
     }
 
-    public long DoPart2()
+    public string DoPart2()
     {
         var ratings = 0L;
         for (var r = 0; r < _map.Rows; r++)
@@ -39,7 +39,7 @@ public sealed class Day10 : IDay
             }
         }
 
-        return ratings;
+        return ratings.ToString();
     }
 
     private static void GetTrailScore(Grid<int> map, Position position, HashSet<Position> trailheads)
