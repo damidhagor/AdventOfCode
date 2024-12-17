@@ -14,3 +14,4 @@ DayRunner.Run<Year2024.Day13.Day13>();
 DayRunner.Run<Year2024.Day14.Day14>();
 DayRunner.Run<Year2024.Day15.Day15>();
 DayRunner.Run<Year2024.Day16.Day16>();
+DayRunner.Run<Year2024.Day17.Day17>();
