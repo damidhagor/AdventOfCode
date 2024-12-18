@@ -42,4 +42,6 @@ public sealed class Grid<T>(T[,] positions)
 
     public bool IsInBounds(Position p)
         => p.Row >= 0 && p.Row < Rows && p.Column >= 0 && p.Column < Columns;
+
+    public Grid<T> Clone() => new((T[,])_positions.Clone());
 }
