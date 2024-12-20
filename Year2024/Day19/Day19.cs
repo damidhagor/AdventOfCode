@@ -5,7 +5,7 @@ public sealed class Day19 : IDay
     private Dictionary<char, string[]> _availablePatterns = default!;
     private string[] _neededPatterns = default!;
 
-    public int Day => 18;
+    public int Day => 19;
 
     public string DoPart1()
     {
